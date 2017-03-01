@@ -128,6 +128,5 @@ class AppSession(ApplicationSession):
             if input_device in self.routings.keys():
                 for out in self.routings[input_device]:
                     output_id = out.split(".")[1]
-                    print "midi.listen."+out, message, output_id
                     yield self.publish("midi.listen."+out, message, output_id)
         yield self.subscribe(midi_broadcast, "midi.broadcast")

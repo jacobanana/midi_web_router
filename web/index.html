@@ -242,10 +242,7 @@
       }
 
       function MIDIsend(message){
-
         msg = [message[0][0], message[0][1], message[0][2]];
-        console.log(msg);
-        console.log(message[1]);
         var output = midi.outputs.get(message[1]);
         output.send(msg);
       }
