@@ -51,7 +51,6 @@
                     </div>
                   </div>
                 </form>
-                <div class="col-sm-12 text-center"><button type="button" class="btn btn-primary" id="refresh-local">Refresh</button></div>
               </div>
             </div>
 
@@ -76,11 +75,6 @@
                 </table>
               </div>
             </form>
-
-            <div class="row">
-                <div class="col-sm-6 text-left"><button type="button" class="btn btn-primary" id="remote-refresh">Refresh</button></div>
-            </div>
-
           </div>
         </div>
 
@@ -186,7 +180,7 @@
              $("#remote-outputs").html("");
              $.each(res, function(host_id, output){
                  $.each(output, function(id, name){
-                   $("#remote-outputs").append("<tr id='"+ host_id +"-"+ id +"'><th>"+ name +"<br/>@ "+ host_list[host_id] +"<br/>"+ id +"</th></tr>");
+                   $("#remote-outputs").append("<tr id='"+ host_id +"-"+ id +"'><th>"+ name +"<br/>@ "+ host_list[host_id] +"</th></tr>");
                    $.each(inputs, function(i, n){
                      checked = "";
                      td_class = "";
@@ -254,7 +248,6 @@
         $("#local-outputs").html("");
 
         var MIDIDevices = {}
-        var pub = {}
 
         for (var entry of midiAccess.inputs) {
           var input = entry[1];
@@ -301,13 +294,5 @@
         }
       }
       </script>
-      <script>
-        // Refresh list of local devices
-        $("#refresh-local").click( function() { listInputsAndOutputs(midi)} );
-
-        // Create routing table
-        $("#remote-refresh").click( function() { routingTable(); });
-      </script>
-
    </body>
 </html>

@@ -23,6 +23,10 @@ class AppSession(ApplicationSession):
                 self.devices[device_type][host_id][device_id] = device_name
             elif device_id in self.devices[device_type][host_id].keys() and not device_status:
                 del self.devices[device_type][host_id][device_id]
+                if host_id+"."+device_id in self.routings.keys():
+                    del self.routings[host_id+"."+device_id]
+                if host_id+"."+device_id in [i for s in self.routings.values() for i in s]:
+                    print "found as target, must delete"
             self.log.info("Device Updated: [{}] {} @ {} = {}".format(device_type, device_name, host_id, device_status))
             yield self.publish(u"routings.refresh")
         yield self.subscribe(device_update, u"device.update")
