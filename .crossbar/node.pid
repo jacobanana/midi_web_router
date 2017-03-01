@@ -1,0 +1,19 @@
+{
+    "pid": 1583, 
+    "options": {
+        "reactor": null, 
+        "cdc": false, 
+        "loglevel": "info", 
+        "logtofile": false, 
+        "logformat": "standard", 
+        "command": "start", 
+        "logdir": null, 
+        "config": "config.json", 
+        "colour": "auto", 
+        "cbdir": "/Users/jacobanana/scripts/midi_web_router/midi_web_router_app/.crossbar"
+    }, 
+    "argv": [
+        "/Users/jacobanana/scripts/midi_web_router/venv/bin/crossbar", 
+        "start"
+    ]
+}
