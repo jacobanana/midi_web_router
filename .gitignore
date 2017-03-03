@@ -1,1 +1,4 @@
 *.pyc
+*.pid
+*.priv
+*.pub
