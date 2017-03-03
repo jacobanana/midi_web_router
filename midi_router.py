@@ -23,10 +23,8 @@ class AppSession(ApplicationSession):
                 self.devices[device_type][host_id][device_id] = device_name
             elif device_id in self.devices[device_type][host_id].keys() and not device_status:
                 del self.devices[device_type][host_id][device_id]
-                if host_id+"."+device_id in self.routings.keys():
-                    del self.routings[host_id+"."+device_id]
-                if host_id+"."+device_id in [i for s in self.routings.values() for i in s]:
-                    print "found as target, must delete"
+                routing_remove_input(host_id, device_id)
+                routing_remove_output(host_id, device_id)
             self.log.info("Device Updated: [{}] {} @ {} = {}".format(device_type, device_name, host_id, device_status))
             yield self.publish(u"routings.refresh")
         yield self.subscribe(device_update, u"device.update")
@@ -65,12 +63,20 @@ class AppSession(ApplicationSession):
         def host_disconnect(host_id):
             if host_id in self.hostnames:
                 self.log.info("{} [{}] disconnected".format(self.hostnames[host_id], host_id))
+
                 if host_id in self.devices["input"].keys():
+                    for device_id in self.devices["input"][host_id]:
+                        routing_remove_input(host_id, device_id)
                     del self.devices["input"][host_id]
+
                 if host_id in self.devices["output"].keys():
+                    for device_id in self.devices["output"][host_id]:
+                        routing_remove_output(host_id, device_id)
                     del self.devices["output"][host_id]
+
                 if host_id in self.hostnames.keys():
                     del self.hostnames[host_id]
+
                 yield self.publish(u"routings.refresh")
         yield self.subscribe(host_disconnect, u"host.disconnect")
 
@@ -95,6 +101,18 @@ class AppSession(ApplicationSession):
                 return host_id
         yield self.register(host_get_name, u"host.get.name")
 
+        @inlineCallbacks
+        def host_ping():
+            for host in self.hostnames.keys():
+                try:
+                    ping = yield self.call(u"ping."+host)
+                except:
+                    ping = False
+                finally:
+                    if not ping:
+                        self.console.warning("Couldn't ping host... Disconnecting "+host)
+                        host_disconnect(host)
+                        yield self.publish(u"routings.refresh")
 
         @inlineCallbacks
         def routing_set(routing):
@@ -126,6 +144,17 @@ class AppSession(ApplicationSession):
             return self.routings
         yield self.register(routing_list, u"routing.list")
 
+        # Remove all routings for specific input device
+        def routing_remove_input(host_id, device_id):
+            if host_id+"."+device_id in self.routings.keys():
+                del self.routings[host_id+"."+device_id]
+
+        # Remove all routings for specific output device
+        def routing_remove_output(host_id, device_id):
+            if host_id+"."+device_id in [i for s in self.routings.values() for i in s]:
+                for i, o in self.routings.iteritems():
+                    if host_id+"."+device_id in o:
+                        self.routings[i].pop(o.index(host_id+"."+device_id))
 
         @inlineCallbacks
         def midi_broadcast(input_device, message):
@@ -134,3 +163,7 @@ class AppSession(ApplicationSession):
                     output_id = out.split(".")[1]
                     yield self.publish("midi.listen."+out, message, output_id)
         yield self.subscribe(midi_broadcast, "midi.broadcast")
+
+        while True:
+            host_ping()
+            yield sleep(5)
