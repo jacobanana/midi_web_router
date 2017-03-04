@@ -54,7 +54,7 @@ Usage
   
 3. In the *Local Devices* tab, set a *Machine ID* and register the MIDI devices you would like to make available
 
-4. Repeat 2 and 3 on another computer
+4. Repeat 2 and 3 on another computer you would like to add to the MIDI network
 
 5. Set your routings using the grid.
    Note that you can only route a single Input device per Output device but you can route the same 
