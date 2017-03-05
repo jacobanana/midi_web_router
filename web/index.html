@@ -17,43 +17,64 @@
 
 
    <body>
+
       <div class="container">
+
         <div id="header" class="page-header">
-          <h1>MIDI WAMP ROUTER</h1>
+          <h1>MIDI ROUTER</h1>
         </div>
 
-
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingLocal">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseLocal" aria-expanded="true" aria-controls="collapseLocal">
-                  <h3 class="panel-title">Local Devices</h3>
-                </a>
-            </div>
-
-            <div id="collapseLocal" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingLocal">
-              <div class="panel-body">
-                <form class="form-horizontal">
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Machine ID</label>
-                    <div class="col-sm-9">
-                      <input type="text" id="host-name" class="form-control"/>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Local Input Devices</label>
-                    <div class="col-sm-9" id="local-inputs">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Local Output Device</label>
-                    <div class="col-sm-9" id="local-outputs">
-                    </div>
-                  </div>
-                </form>
+        <div class="row">
+          <div class="panel-group col-sm-6" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingLocal">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseLocal" aria-expanded="true" aria-controls="collapseLocal">
+                    <h3 class="panel-title">Local Devices</h3>
+                  </a>
               </div>
-            </div>
 
+              <div id="collapseLocal" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingLocal">
+                <div class="panel-body">
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Machine ID</label>
+                      <div class="col-sm-9">
+                        <input type="text" id="host-name" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Local Input Devices</label>
+                      <div class="col-sm-9" id="local-inputs">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Local Output Device</label>
+                      <div class="col-sm-9" id="local-outputs">
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="panel-group col-sm-6" id="accordion2" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingHosts">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapseHosts" aria-expanded="true" aria-controls="collapseHosts">
+                    <h3 class="panel-title">Connected Hosts</h3>
+                  </a>
+              </div>
+
+              <div id="collapseHosts" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingHosts">
+                <div class="panel-body">
+                  <ul id="hostlist">
+                  </ul>
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
 

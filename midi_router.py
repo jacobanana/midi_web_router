@@ -46,6 +46,7 @@ class AppSession(ApplicationSession):
         yield self.register(device_list, u"device.list")
 
         # Connection of a new host
+        @inlineCallbacks
         def host_connect(host_id, host_name=None):
             if host_name is not None:
                 host_update(host_id, host_name)
@@ -56,6 +57,7 @@ class AppSession(ApplicationSession):
             self.devices["output"][host_id] = {}
 
             self.log.info("{} connected".format(host_id))
+            yield self.publish(u"hostlist.refresh")
         yield self.subscribe(host_connect, u"host.connect")
 
         # Disconnection of a host
@@ -78,6 +80,7 @@ class AppSession(ApplicationSession):
                     del self.hostnames[host_id]
 
                 yield self.publish(u"routings.refresh")
+                yield self.publish(u"hostlist.refresh")
         yield self.subscribe(host_disconnect, u"host.disconnect")
 
         # Update host name for a host id
@@ -86,6 +89,7 @@ class AppSession(ApplicationSession):
             self.hostnames[host_id] = host_name
             self.log.info("{} = {}".format(host_id, host_name))
             yield self.publish(u"routings.refresh")
+            yield self.publish(u"hostlist.refresh")
         yield self.subscribe(host_update, u"host.update")
 
         # Get the list of all host names

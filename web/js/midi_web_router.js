@@ -35,6 +35,7 @@ connection.onopen = function (session, details) {
       }
    );
    session.subscribe('routings.refresh', routingTable);
+   session.subscribe('hostlist.refresh', hostList);
    routingTable();
 }
 
@@ -64,7 +65,7 @@ function routingTable(){
 
   // Input Devices
   connection.session.call("device.list", ["input"]).then( function(res){
-    $("#remote-inputs").html("<th>&nbsp;</th>");
+    $("#remote-inputs").html("<td><div class='col-md-6'><span class='glyphicon glyphicon-arrow-down'></span> Outputs</div><div class='col-md-6 text-right'>Inputs <span class='glyphicon glyphicon-arrow-right'></span></div></td>");
     $.each(res, function(host_id, input){
         $.each(input, function(id, name){
           $("#remote-inputs").append("<th>"+ name +"<br/>@ "+ host_list[host_id] +"</th>");
@@ -191,4 +192,14 @@ function listInputsAndOutputs( midiAccess ) {
      }
    })
   }
+}
+
+// Refresh the list of connected hosts
+function hostList(){
+  connection.session.call("host.list", []).then( function(res){
+    $("#hostlist").html("");
+    $.each(res, function(host_id, user){
+      $("#hostlist").append("<li>"+user+"</li>");
+    });
+  });
 }
